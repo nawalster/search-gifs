@@ -1,6 +1,9 @@
 import Searchbar from "@/components/Searchbar";
-import NavButton from "@/components/ui/NavButton";
+import NavButton from "@/components/NavButton";
 import Link from "next/link";
+import GifsContainer from "@/components/GifsContainer";
+import { Suspense } from "react";
+import Loading from "@/components/Loader";
 
 interface PageProps {
   params: {
@@ -25,6 +28,7 @@ export default function Page({ params }: { params: { slug: string } }) {
         </div>
         <Searchbar />
       </div>
+      <GifsContainer query={params.slug} />
     </main>
   );
 }
