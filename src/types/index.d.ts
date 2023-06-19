@@ -3,35 +3,20 @@ export type GifType = {
   url: string;
   title: string;
   username: string;
-  embed_url: string;
   images: GifImages;
 };
-export type GifsType = {
-  page: number;
-  // results: GifType[]
-};
-// export type GifImages = {
-//   fixed_height: FixedHeight;
-// };
-// export type FixedHeight = {
-//   url: string;
-// };
 
 export type GifImages = {
-  original: GifImageSize;
-  fixed_height: GifImageSize;
-  fixed_width: GifImageSize;
+  original: GifImageData;
+  fixed_height: GifImageData;
+  fixed_width: GifImageData;
 };
 
-export type GifImageSize = {
+export type GifImageData = {
   height: string;
   width: string;
   size: string;
   url: string;
-  mp4_size: string;
-  mp4: string;
-  webp_size: string;
-  webp: string;
 };
 
 export type EqualityChecker<T> = (prevItem: T, newItem: T) => boolean;

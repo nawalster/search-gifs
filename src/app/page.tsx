@@ -1,10 +1,8 @@
 import Link from "next/link";
-import { Suspense } from "react";
 
 import NavButton from "@/components/NavButton";
 import Searchbar from "@/components/Searchbar";
 import GifsContainer from "@/components/GifsContainer";
-import Loading from "@/components/Loader";
 
 export default function Home() {
   return (
@@ -22,7 +20,6 @@ export default function Home() {
         </div>
         <Searchbar />
       </div>
-
       <GifsContainer />
     </main>
   );

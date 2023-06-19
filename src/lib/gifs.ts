@@ -1,15 +1,20 @@
-import { api_key, api_url, limit } from "@/constants";
+import {
+  GifTypeSchema,
+  GifImagesSchema,
+  GifImageDataSchema,
+} from "./validations";
+import { api_key, api_url, LIMIT } from "@/constants";
 import { GifType } from "@/types";
 
 export async function getTrendingGifs(offset: number = 0): Promise<GifType[]> {
   console.log("offset: ", offset);
-  const trending_url = `${api_url}/trending?api_key=${api_key}&limit=${limit}&offset=${
-    offset * limit
+  const trending_url = `${api_url}/trending?api_key=${api_key}&limit=${LIMIT}&offset=${
+    offset * LIMIT
   }`;
   console.log(trending_url);
   const res = await fetch(
-    `${api_url}/trending?api_key=${api_key}&limit=${limit}&offset=${
-      offset * limit
+    `${api_url}/trending?api_key=${api_key}&limit=${LIMIT}&offset=${
+      offset * LIMIT
     }`
   );
 
@@ -18,14 +23,15 @@ export async function getTrendingGifs(offset: number = 0): Promise<GifType[]> {
   }
 
   const data = await res.json();
+  const validatedData = GifTypeSchema.array().parse(data.data);
 
-  console.log(data);
+  console.log(validatedData);
 
   const uniqueGifs: GifType[] = [];
 
-  // Filter out duplicates based on GIF ID
+  // Filter out duplicates based on GIF ID (due to Trending API behaviour; can return duplicates)
   const gifIds = new Set<string>();
-  data.data.forEach((gif: GifType) => {
+  validatedData.forEach((gif: GifType) => {
     if (!gifIds.has(gif.id)) {
       gifIds.add(gif.id);
       uniqueGifs.push(gif);
@@ -41,8 +47,8 @@ export async function searchGifs(
 ): Promise<GifType[]> {
   console.log("searchTerm: ", searchTerm);
   const res = await fetch(
-    `${api_url}/search?api_key=${api_key}&q=${searchTerm}&limit=${limit}&offset=${
-      offset * limit
+    `${api_url}/search?api_key=${api_key}&q=${searchTerm}&limit=${LIMIT}&offset=${
+      offset * LIMIT
     }`
   );
 
@@ -52,12 +58,15 @@ export async function searchGifs(
 
   const data = await res.json();
 
+  const validatedData = GifTypeSchema.array().parse(data.data);
+
   console.log(data);
 
-  return data.data;
+  return validatedData;
 }
 
-export const getFavourites = async (ids: string): Promise<GifType[]> => {
+export const getFavourites = async (ids: string[]): Promise<GifType[]> => {
+  if (ids.length === 0) return [];
   console.log("gifIds: ", ids);
 
   const res = await fetch(`${api_url}?api_key=${api_key}&ids=${ids}`);
@@ -68,6 +77,7 @@ export const getFavourites = async (ids: string): Promise<GifType[]> => {
   const data = await res.json();
 
   console.log(data);
+  const validatedData = GifTypeSchema.array().parse(data.data);
 
-  return data.data;
+  return validatedData;
 };

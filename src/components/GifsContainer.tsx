@@ -2,21 +2,23 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import useFetch from "@/hooks/useFetch";
-import { getTrendingGifs, searchGifs } from "@/lib/gifs"; // Ensure both methods are exported from the same file or adjust the import
+import { getTrendingGifs, searchGifs } from "@/lib/gifs";
 import { GifType } from "@/types";
 import MasonryGrid from "./MasonryGrid";
 import Loading from "./Loader";
 
 const GifsGrid = ({ query }: { query?: string }) => {
   const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchData = query ? searchGifs : getTrendingGifs;
   const fetchParams = { query: query || "", page };
 
-  const { items, isLoading, error, hasMore } = useFetch(
+  const { items, error, hasMore } = useFetch(
     fetchParams,
     fetchData,
-    (prevItem: GifType, newItem: GifType) => prevItem.id === newItem.id
+    (prevItem: GifType, newItem: GifType) => prevItem.id === newItem.id,
+    () => setIsLoading(false)
   );
 
   const observer = useRef<IntersectionObserver | null>(null);
@@ -45,6 +47,8 @@ const GifsGrid = ({ query }: { query?: string }) => {
   if (isLoading) {
     return <Loading />;
   }
+
+  console.log(isLoading);
 
   return (
     <div className="h-screen">

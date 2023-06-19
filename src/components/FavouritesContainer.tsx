@@ -7,6 +7,7 @@ import React, {
   useState,
 } from "react";
 
+import { LIMIT } from "@/constants";
 import MasonryGrid from "./MasonryGrid";
 import { GifType } from "@/types";
 import useFavouritesFetch from "@/hooks/useFavouritesFetch";
@@ -18,8 +19,8 @@ const FavouritesContainer = () => {
   const [displayItems, setDisplayItems] = useState<GifType[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const observer = useRef<IntersectionObserver | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // const likedImages = JSON.parse(localStorage.getItem("likedImages") || "[]");
   const likedImages = JSON.parse(
     typeof localStorage !== "undefined"
       ? localStorage.getItem("likedImages") || "[]"
@@ -30,30 +31,24 @@ const FavouritesContainer = () => {
 
   const query = useMemo(() => ({ ids: likedImages }), [likedImages]);
 
-  const {
-    allItems,
-    loading: isLoading,
-    error,
-  } = useFavouritesFetch(query, getFavourites);
+  const { allItems, error } = useFavouritesFetch(query, getFavourites, () =>
+    setIsLoading(false)
+  );
 
-  // const {
-  //   allItems,
-  //   loading: isLoading,
-  //   error,
-  // } = useFavouritesFetch({ ids: likedImages }, getFavourites);
   console.log("all items length: ", allItems.length);
 
   useEffect(() => {
-    const newItems = allItems.slice(page * 25, (page + 1) * 25);
+    const newItems = allItems.slice(page * LIMIT, (page + 1) * LIMIT);
+    console.log(newItems);
     console.log(newItems.length);
     if (newItems.length > 0) {
       setDisplayItems((prevItems) => [...prevItems, ...newItems]);
-      // Add items to the displayed list, and if there are no more items to add, setHasMore to false
-      if ((page + 1) * 25 >= allItems.length) setHasMore(false);
+
+      if ((page + 1) * LIMIT >= allItems.length) setHasMore(false);
     } else {
-      setHasMore(false);
+      setHasMore(true);
     }
-  }, [page, allItems.length, hasMore]);
+  }, [page, allItems.length]);
 
   const lastItemRef = useCallback(
     (node: HTMLDivElement) => {
@@ -64,7 +59,7 @@ const FavouritesContainer = () => {
           setPage((prev) => prev + 1);
         }
       });
-      if (node && hasMore) observer.current.observe(node); // Check if `hasMore` is true before starting to observe
+      if (node && hasMore) observer.current.observe(node);
     },
     [isLoading, hasMore]
   );

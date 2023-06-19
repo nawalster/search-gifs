@@ -5,7 +5,8 @@ type FetchParams = { ids: string[] };
 
 export default function useFavouritesFetch(
   { ids }: FetchParams,
-  apiFunction: any
+  apiFunction: any,
+  onDataLoaded: () => void
 ) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -21,6 +22,7 @@ export default function useFavouritesFetch(
       .then((items: GifType[]) => {
         setAllItems(items);
         setLoading(false);
+        onDataLoaded();
       })
       .catch((e: Error) => {
         setError(true);
@@ -28,5 +30,5 @@ export default function useFavouritesFetch(
       });
   }, [idsString, apiFunction]);
 
-  return { loading, error, allItems };
+  return { loading, error, allItems, fetchItems: apiFunction };
 }

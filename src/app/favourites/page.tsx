@@ -4,7 +4,6 @@ import { Suspense } from "react";
 import Searchbar from "@/components/Searchbar";
 import NavButton from "@/components/NavButton";
 import FavouritesContainer from "@/components/FavouritesContainer";
-import Loading from "@/components/Loader";
 
 const page = async () => {
   return (

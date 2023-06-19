@@ -9,7 +9,8 @@ interface FetchParams {
 function useFetch<T>(
   { query, page }: FetchParams,
   fetchFunc: FetchFunction<T>,
-  isEqual: EqualityChecker<T>
+  isEqual: EqualityChecker<T>,
+  onDataLoaded: () => void
 ) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -34,6 +35,8 @@ function useFetch<T>(
 
       setHasMore(true);
       setIsLoading(false);
+
+      onDataLoaded();
     } catch (err) {
       console.log(err);
       setError(err as Error);
