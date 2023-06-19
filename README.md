@@ -21,7 +21,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser.
 - Tailwind CSS
 - Zod
 
-## Endpoints used:
+## Endpoints used
 
 - **Search Endpoint**: api.giphy.com/v1/gifs/search
 - **Trending Endpoint**: api.giphy.com/v1/gifs/trending
@@ -34,7 +34,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser.
 - Infinite scrolling (content is continuously loaded and displayed as the user scrolls down the page).
 - Favourites are stored locally (liked gifs are stored in local storage).
 
-## Bringing type safety using Typescript and Zod:
+## Bringing type safety using Typescript and Zod
 
 - TypeScript allows you to define the types of variables, function arguments, and return values in your code. This helps catch type errors early in development rather than waiting for them to surface during testing or production.
 
