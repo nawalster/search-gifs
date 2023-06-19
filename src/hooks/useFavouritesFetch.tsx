@@ -9,25 +9,28 @@ export default function useFavouritesFetch(
   onDataLoaded: () => void
 ) {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
   const [allItems, setAllItems] = useState<GifType[]>([]);
-  console.log("ids: ", ids);
+
   const idsString = JSON.stringify(ids);
 
   useEffect(() => {
-    setLoading(true);
-    setError(false);
+    const fetchItems = async () => {
+      setLoading(true);
+      setError(null);
 
-    apiFunction(ids)
-      .then((items: GifType[]) => {
+      try {
+        const items: GifType[] = await apiFunction(ids);
         setAllItems(items);
-        setLoading(false);
         onDataLoaded();
-      })
-      .catch((e: Error) => {
-        setError(true);
+      } catch (err) {
+        setError(err as Error);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchItems();
   }, [idsString, apiFunction]);
 
   return { loading, error, allItems, fetchItems: apiFunction };

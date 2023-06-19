@@ -48,8 +48,6 @@ const GifsGrid = ({ query }: { query?: string }) => {
     return <Loading />;
   }
 
-  console.log(isLoading);
-
   return (
     <div className="h-screen">
       <MasonryGrid images={items} lastItemRef={lastItemRef} />

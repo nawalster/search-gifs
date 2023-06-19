@@ -98,8 +98,7 @@ const MasonryGrid = ({
         ))
       ) : (
         <div className="flex justify-center w-screen font-mono pt-10">
-          You dont have any
-          <span className="text-red-600 px-1">favourites</span> yet!
+          {`No GIFS :(`}
         </div>
       )}
     </div>

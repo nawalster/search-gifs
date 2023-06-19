@@ -23,7 +23,7 @@ class ErrorBoundary extends React.Component<
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
-    console.log("Uncaught error:", error, errorInfo);
+    console.error("Uncaught error:", error, errorInfo);
   }
 
   render(): React.ReactNode {

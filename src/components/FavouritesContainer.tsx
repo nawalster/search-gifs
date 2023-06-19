@@ -27,20 +27,15 @@ const FavouritesContainer = () => {
       : "[]"
   );
 
-  console.log("likedImages: ", likedImages);
-
   const query = useMemo(() => ({ ids: likedImages }), [likedImages]);
 
   const { allItems, error } = useFavouritesFetch(query, getFavourites, () =>
     setIsLoading(false)
   );
 
-  console.log("all items length: ", allItems.length);
-
   useEffect(() => {
     const newItems = allItems.slice(page * LIMIT, (page + 1) * LIMIT);
-    console.log(newItems);
-    console.log(newItems.length);
+
     if (newItems.length > 0) {
       setDisplayItems((prevItems) => [...prevItems, ...newItems]);
 

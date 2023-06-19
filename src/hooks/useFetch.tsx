@@ -21,8 +21,6 @@ function useFetch<T>(
     try {
       setIsLoading(true);
       setError(null);
-      console.log("send query in usefetch");
-      console.log("query, ", query);
       const res = await fetchFunc(page, query);
       setItems((prev) => {
         // Filter out duplicates based on the custom equality checker
@@ -38,7 +36,7 @@ function useFetch<T>(
 
       onDataLoaded();
     } catch (err) {
-      console.log(err);
+      console.error(err);
       setError(err as Error);
     }
   }, [fetchFunc, page, query]);
